@@ -6,7 +6,11 @@ A clean, modular TypeScript project that scrapes book data (title, price, link) 
 - **TypeScript**: Type-safe, modern codebase
 - **Modular Structure**: Separation of concerns (fetching, parsing, types)
 - **Static HTML Scraping**: Uses Cheerio for fast, reliable parsing
-- **Easy to Extend**: Add pagination, export, or more fields easily
+- **Full-Site Crawl**: Crawls all pages, not just the first
+- **Progress Logging**: Logs progress page-by-page and total books scraped
+- **Retry Logic**: Retries failed requests with delay
+- **Delay Between Requests**: Configurable delay to avoid overloading the server
+- **Easy to Extend**: Add export, more fields, or concurrency easily
 
 ## Tech Stack
 - **Language**: TypeScript
@@ -18,11 +22,12 @@ A clean, modular TypeScript project that scrapes book data (title, price, link) 
 ```
 /src
   ├── index.ts      # Entry point
-  ├── fetcher.ts    # HTTP fetching logic
+  ├── fetcher.ts    # HTTP fetching logic (with retry)
   ├── parser.ts     # HTML parsing logic
   └── types.ts      # TypeScript types
 tsconfig.json
 package.json
+/data/books.json   # Output file (gitignored)
 ```
 
 ## Getting Started
@@ -38,7 +43,7 @@ cd WebScraper101
 npm install
 ```
 
-### 3. Run the scraper
+### 3. Run the scraper (full-site crawl)
 ```
 npx ts-node src/index.ts
 ```
@@ -50,12 +55,23 @@ npx tsc
 Compiled files will be in the `dist/` directory.
 
 ## Output
-The scraper logs an array of book objects (title, price, link) from the homepage to the console.
+The scraper logs progress to the console and saves all books to `/data/books.json` in the following format:
+
+```json
+{
+  "books": [
+    { "title": "...", "price": "...", "link": "..." },
+    ...
+  ],
+  "scrapedAt": "2024-06-07T12:34:56.789Z"
+}
+```
 
 ## Extending
-- **Pagination**: Add logic to fetch and parse additional pages
+- **Pagination**: Already implemented for all pages
 - **Export**: Save results to CSV, JSON, or database
 - **Testing**: Add unit tests for parser and fetcher modules
+- **Concurrency**: Add parallel page fetching if needed
 
 ## Contributing
 Pull requests are welcome! For major changes, please open an issue first to discuss what you would like to change.
@@ -65,6 +81,10 @@ Pull requests are welcome! For major changes, please open an issue first to disc
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin feature/YourFeature`)
 5. Open a pull request
+
+## Branches
+- `main`: Stable, production-ready code
+- `step_02/static_website_pagination_crawl`: Full-site crawl and advanced features (merged to main)
 
 ## License
 MIT 
