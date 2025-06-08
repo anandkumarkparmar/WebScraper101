@@ -1,52 +1,65 @@
 # WebScraper101
 
-A clean, modular TypeScript project that scrapes book data (title, price, link) from the homepage of [books.toscrape.com](https://books.toscrape.com) using Cheerio for static HTML parsing.
+A clean, modular TypeScript project for both static and dynamic web scraping. Includes:
+- Static scraper for books.toscrape.com (Cheerio + Axios)
+- Dynamic scraper for quotes.toscrape.com/js/ (Playwright)
 
 ## Features
 - **TypeScript**: Type-safe, modern codebase
-- **Modular Structure**: Separation of concerns (fetching, parsing, types)
+- **Modular Structure**: Static and dynamic scrapers separated
 - **Static HTML Scraping**: Uses Cheerio for fast, reliable parsing
-- **Full-Site Crawl**: Crawls all pages, not just the first
-- **Progress Logging**: Logs progress page-by-page and total books scraped
-- **Retry Logic**: Retries failed requests with delay
-- **Delay Between Requests**: Configurable delay to avoid overloading the server
+- **Dynamic Scraping**: Uses Playwright for JavaScript-rendered sites, screenshots, and visual feedback
+- **Progress Logging**: Logs progress and steps for both scrapers
+- **Retry Logic**: Retries failed requests (static)
+- **Delay Between Requests**: Configurable delay
 - **Easy to Extend**: Add export, more fields, or concurrency easily
 
 ## Tech Stack
 - **Language**: TypeScript
 - **Runtime**: Node.js
-- **Packages**: [axios](https://www.npmjs.com/package/axios), [cheerio](https://www.npmjs.com/package/cheerio)
+- **Packages**: axios, cheerio, playwright
 - **Dev Tools**: ts-node, typescript, @types/node
 
 ## Project Structure
 ```
 /src
-  ├── index.ts      # Entry point
-  ├── fetcher.ts    # HTTP fetching logic (with retry)
-  ├── parser.ts     # HTML parsing logic
-  └── types.ts      # TypeScript types
+  ├── static/
+  │     ├── index.ts         # Static scraper entry point
+  │     ├── fetcher.ts       # HTTP fetching logic (with retry)
+  │     ├── parser.ts        # HTML parsing logic
+  │     └── types.ts         # Book types
+  └── dynamic/
+        ├── playwrightScraper.ts # Dynamic scraper entry point
+        ├── utils.ts             # delay, logging helpers
+        └── types.ts             # Quote types
 tsconfig.json
 package.json
-/data/books.json   # Output file (gitignored)
+/data/books.json           # Static scraper output (gitignored)
+/data/dynamic-quotes.json  # Dynamic scraper output (gitignored)
+/data/screenshots/         # Dynamic scraper screenshots (gitignored)
 ```
 
-## Getting Started
+## Usage
 
-### 1. Clone the repository
-```
-git clone git@github.com:anandkumarkparmar/WebScraper101.git
-cd WebScraper101
-```
-
-### 2. Install dependencies
+### 1. Install dependencies
 ```
 npm install
 ```
 
-### 3. Run the scraper (full-site crawl)
+### 2. Run the static scraper (books)
 ```
-npx ts-node src/index.ts
+npm run scrape:static
 ```
+- Scrapes all books from https://books.toscrape.com
+- Saves results to `/data/books.json`
+
+### 3. Run the dynamic scraper (quotes)
+```
+npm run scrape:dynamic
+```
+- Scrapes all quotes from https://quotes.toscrape.com/js/
+- Takes a screenshot per page in `/data/screenshots/`
+- Saves results to `/data/dynamic-quotes.json`
 
 ### 4. Build for production
 ```
@@ -54,37 +67,10 @@ npx tsc
 ```
 Compiled files will be in the `dist/` directory.
 
-## Output
-The scraper logs progress to the console and saves all books to `/data/books.json` in the following format:
-
-```json
-{
-  "books": [
-    { "title": "...", "price": "...", "link": "..." },
-    ...
-  ],
-  "scrapedAt": "2024-06-07T12:34:56.789Z"
-}
-```
-
 ## Extending
-- **Pagination**: Already implemented for all pages
-- **Export**: Save results to CSV, JSON, or database
-- **Testing**: Add unit tests for parser and fetcher modules
-- **Concurrency**: Add parallel page fetching if needed
-
-## Contributing
-Pull requests are welcome! For major changes, please open an issue first to discuss what you would like to change.
-
-1. Fork the repo
-2. Create your feature branch (`git checkout -b feature/YourFeature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin feature/YourFeature`)
-5. Open a pull request
-
-## Branches
-- `main`: Stable, production-ready code
-- `step_02/static_website_pagination_crawl`: Full-site crawl and advanced features (merged to main)
+- Add more scrapers in their own folders
+- Add export to CSV, database, etc.
+- Add tests for each module
 
 ## License
 MIT 

@@ -7,7 +7,7 @@ import path from 'path';
 const BASE_URL = 'https://books.toscrape.com/';
 const PAGE_URL = (page: number) =>
   page === 1 ? BASE_URL : `${BASE_URL}catalogue/page-${page}.html`;
-const OUTPUT_PATH = path.join(__dirname, '../data/books.json');
+const OUTPUT_PATH = path.join(__dirname, '../../data/books.json');
 const DELAY_BETWEEN_REQUESTS = 1000; // ms
 const RETRIES = 3;
 

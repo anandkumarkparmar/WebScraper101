@@ -1,11 +1,16 @@
 {
   "devDependencies": {
     "@types/node": "^22.15.30",
+    "playwright": "^1.52.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3"
   },
   "dependencies": {
     "axios": "^1.9.0",
     "cheerio": "^1.0.0"
+  },
+  "scripts": {
+    "scrape:static": "ts-node src/static/index.ts",
+    "scrape:dynamic": "ts-node src/dynamic/playwrightScraper.ts"
   }
 }
