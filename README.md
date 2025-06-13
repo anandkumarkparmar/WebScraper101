@@ -12,6 +12,7 @@ A clean, modular TypeScript project for both static and dynamic web scraping. In
 - **Progress Logging**: Logs progress and steps for both scrapers
 - **Retry Logic**: Retries failed requests (static)
 - **Delay Between Requests**: Configurable delay
+- **Proxy Support**: Configure proxy via environment variable or CLI argument
 - **Easy to Extend**: Add export, more fields, or concurrency easily
 
 ## Tech Stack
@@ -61,7 +62,25 @@ npm run scrape:dynamic
 - Takes a screenshot per page in `/data/screenshots/`
 - Saves results to `/data/dynamic-quotes.json`
 
-### 4. Build for production
+### 4. Using a Proxy
+You can use a proxy in two ways:
+
+1. Environment variable:
+```bash
+export PROXY=http://your-proxy-host:port
+npm run scrape:dynamic
+```
+
+2. CLI argument:
+```bash
+npm run scrape:dynamic -- --proxy=http://your-proxy-host:port
+```
+
+Proxy format:
+- Basic: `http://host:port`
+- With authentication: `http://username:password@host:port`
+
+### 5. Build for production
 ```
 npx tsc
 ```
